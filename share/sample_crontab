@@ -1,0 +1,2 @@
+# run Proton-Sentinel every two minutes
+*/2 * * * * cd /home/YOURUSERNAME/proton_sentinel && ./venv/bin/python bin/sentinel.py >/dev/null 2>&1
