@@ -21,7 +21,7 @@ def test_protond():
         if line.startswith('testnet=1'):
             network = 'testnet'
             is_testnet = True
-            genesis_hash = u'000005e8d240378921a0c3e84933ed2059ab1375304809a33884a86c6d8bf38c'
+            genesis_hash = u'0000000f350d9039575f6446584f4ae4317bed76aae26ef1f2381ff73f7cd68d'
 
     creds = ProtonConfig.get_rpc_creds(config_text, network)
     protond = ProtonDaemon(**creds)
@@ -29,7 +29,7 @@ def test_protond():
 
     assert hasattr(protond, 'rpc_connection')
 
-    # Proton testnet block 0 hash == 000005e8d240378921a0c3e84933ed2059ab1375304809a33884a86c6d8bf38c
+    # Proton testnet block 0 hash == 0000000f350d9039575f6446584f4ae4317bed76aae26ef1f2381ff73f7cd68d
     # test commands without arguments
     info = protond.rpc_command('getinfo')
     info_keys = [
