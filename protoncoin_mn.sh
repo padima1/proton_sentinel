@@ -10,7 +10,7 @@ sudo apt-get install -y pwgen
 echo -n "Installing dns utils..."
 sudo apt-get install -y dnsutils
 
-PASSWORD="protoncoin@passwd"
+PASSWORD=`pwgen -1 20 -n`
 WANIP=$(dig +short myip.opendns.com @resolver1.opendns.com)
 
 #begin optional swap section
@@ -58,10 +58,10 @@ echo "Loading wallet, 30 seconds wait..."
 sleep 30
 ~/proton/proton-cli stop
 sleep 30
-GEN_PASS=`pwgen -1 20 -n`
+
 cat <<EOF > ~/.protoncore/proton.conf
 rpcuser=protoncoin
-rpcpassword=${GEN_PASS}
+rpcpassword=${PASSWORD}
 EOF
 
 echo "RELOADING WALLET..."
@@ -78,7 +78,6 @@ echo "Mining info..."
 echo "Creating final config..."
 
 cat <<EOF > ~/.protoncore/proton.conf
-
 rpcuser=protoncoin
 rpcpassword=$PASSWORD
 rpcallowip=127.0.0.1
