@@ -121,22 +121,26 @@ sleep 30
 
 echo "Installing sentinel..."
 cd /root/.protoncore
+sudo apt-get install -y git python-virtualenv
 
 sudo git clone https://github.com/protoncoin/proton_sentinel.git
 
 cd proton_sentinel
+
+export LC_ALL=C
+sudo apt-get install -y virtualenv
 
 virtualenv ./venv
 ./venv/bin/pip install -r requirements.txt
 
 echo "proton_conf=/root/.protoncore/proton.conf" >> /root/.protoncore/proton_sentinel/sentinel.conf
 
-crontab -l > proton
+crontab -l > tempcron
 #echo new cron into cron file
-echo "* * * * * cd /root/.protoncore/proton_sentinel && ./venv/bin/python bin/sentinel.py >/dev/null 2>&1" >> proton
+echo "* * * * * cd /root/.protoncore/proton_sentinel && ./venv/bin/python bin/sentinel.py >/dev/null 2>&1" >> tempcron
 #install new cron file
-crontab proton
-rm proton
+crontab tempcron
+rm tempcron
 
 SENTINEL_DEBUG=1 ./venv/bin/python bin/sentinel.py
 echo "Sentinel Installed"
