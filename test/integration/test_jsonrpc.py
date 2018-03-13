@@ -16,7 +16,7 @@ def test_protond():
     config_text = ProtonConfig.slurp_config_file(config.proton_conf)
     network = 'mainnet'
     is_testnet = False
-    genesis_hash = u'000005e8d240378921a0c3e84933ed2059ab1375304809a33884a86c6d8bf38c'
+    genesis_hash = u'00000e1728b630fd83aecbc51546c7915fffb7d3c897b5fd8c4b14043070b7f0'
     for line in config_text.split("\n"):
         if line.startswith('testnet=1'):
             network = 'testnet'
