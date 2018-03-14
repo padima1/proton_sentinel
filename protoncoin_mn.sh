@@ -69,7 +69,7 @@ echo "RELOADING WALLET..."
 sleep 10
 
 echo "Making genkey..."
-GENKEY=$(proton-cli masternode genkey)
+GENKEY=$(~/proton/proton-cli masternode genkey)
 
 echo "Mining info..."
 ~/proton/proton-cli getmininginfo
