@@ -48,10 +48,10 @@ sudo apt-get install libdb5.3-dev libdb5.3++-dev -y
 
 echo "Packages complete..."
 
-wget https://github.com/protoncoin/protoncoin/releases/download/v1.0.5/protoncoin-linux-no-qt-v1.0.5.tar.gz
+wget https://github.com/protoncoin/protoncoin/releases/download/v1.0.6/protoncoin-linux-no-qt-v1.0.6.tar.gz
 
 mkdir proton
-tar -zxvf protoncoin-linux-no-qt-v1.0.5.tar.gz -C proton
+tar -zxvf protoncoin-linux-no-qt-v1.0.6.tar.gz -C proton
 
 echo "Loading wallet, 30 seconds wait..."
 ~/proton/protond --daemon
