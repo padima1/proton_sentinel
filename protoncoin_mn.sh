@@ -53,11 +53,11 @@ wget https://github.com/protoncoin/protoncoin/releases/download/v1.0.6/protoncoi
 mkdir proton
 tar -zxvf protoncoin-linux-no-qt-v1.0.6.tar.gz -C proton
 
-echo "Loading wallet, 30 seconds wait..."
-~/proton/protond --daemon
-sleep 30
+echo "Loading and syncing wallet, 5 minutes wait..."
+~/proton/protond -daemon
+sleep 300
 ~/proton/proton-cli stop
-sleep 30
+sleep 20
 
 cat <<EOF > ~/.protoncore/proton.conf
 rpcuser=protoncoin
@@ -65,8 +65,8 @@ rpcpassword=${PASSWORD}
 EOF
 
 echo "RELOADING WALLET..."
-~/proton/protond --daemon
-sleep 10
+~/proton/protond -daemon
+sleep 30
 
 echo "Making genkey..."
 GENKEY=$(~/proton/proton-cli masternode genkey)
@@ -83,20 +83,18 @@ rpcpassword=$PASSWORD
 rpcallowip=127.0.0.1
 server=1
 daemon=1
-listenonion=0
 listen=1
-staking=0
 rpcport=17866
 port=17817
 maxconnections=256
 masternode=1
 masternodeprivkey=$GENKEY
-
 EOF
 
 echo "Setting basic security..."
+sudo apt-get install systemd -y
 sudo apt-get install fail2ban -y
-sudo apt-get install -y ufw
+sudo apt-get install ufw -y
 sudo apt-get update -y
 
 #fail2ban:
@@ -116,7 +114,7 @@ echo y | sudo ufw enable
 echo "Basic security completed..."
 
 echo "Restarting wallet with new configs, 30 seconds..."
-~/proton/protond --daemon
+~/proton/protond -daemon
 sleep 30
 
 echo "Installing sentinel..."
