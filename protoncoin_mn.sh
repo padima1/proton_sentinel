@@ -10,6 +10,7 @@ sudo apt-get install -y pwgen
 echo -n "Installing dns utils..."
 sudo apt-get install -y dnsutils
 
+WALLET_VERSION='1.0.6'
 PASSWORD=`pwgen -1 20 -n`
 WANIP=$(dig +short myip.opendns.com @resolver1.opendns.com)
 
@@ -48,12 +49,15 @@ sudo apt-get install libdb5.3-dev libdb5.3++-dev -y
 
 echo "Packages complete..."
 
-wget https://github.com/protoncoin/protoncoin/releases/download/v1.0.6/protoncoin-linux-no-qt-v1.0.6.tar.gz
+wget https://github.com/protoncoin/protoncoin/releases/download/v${WALLET_VERSION}/protoncoin-linux-no-qt-v${WALLET_VERSION}.tar.gz
 
+rm -rf proton
 mkdir proton
-tar -zxvf protoncoin-linux-no-qt-v1.0.6.tar.gz -C proton
+tar -zxvf protoncoin-linux-no-qt-v${WALLET_VERSION}.tar.gz -C proton
 
 echo "Loading and syncing wallet, 5 minutes wait..."
+~/proton/proton-cli stop
+sleep 10
 ~/proton/protond -daemon
 sleep 300
 ~/proton/proton-cli stop
