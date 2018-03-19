@@ -10,7 +10,7 @@ sudo apt-get install -y pwgen
 echo -n "Installing dns utils..."
 sudo apt-get install -y dnsutils
 
-WALLET_VERSION='1.0.6'
+WALLET_VERSION='1.1.0'
 PASSWORD=`pwgen -1 20 -n`
 WANIP=$(dig +short myip.opendns.com @resolver1.opendns.com)
 
