@@ -11,8 +11,13 @@ echo -n "Installing dns utils..."
 sudo apt-get install -y dnsutils
 
 WALLET_VERSION='1.1.0'
-PASSWORD=`pwgen -1 20 -n`
 WANIP=$(dig +short myip.opendns.com @resolver1.opendns.com)
+PORT='17817'
+RPCPORT='17866'
+PASSWORD=`pwgen -1 20 -n`
+if [ "x$PASSWORD" = "x" ]; then
+    PASSWORD=${WANIP}-`date +%s`
+fi
 
 #begin optional swap section
 echo "Setting up disk swap..."
@@ -29,7 +34,6 @@ echo "SWAP setup complete..."
 #end optional swap section
 
 echo "Installing packages and updates..."
-
 sudo apt-get update -y
 sudo apt-get upgrade -y
 sudo apt-get dist-upgrade -y
@@ -55,11 +59,19 @@ rm -rf proton
 mkdir proton
 tar -zxvf protoncoin-linux-no-qt-v${WALLET_VERSION}.tar.gz -C proton
 
-echo "Loading and syncing wallet, 5 minutes wait..."
+echo "Loading and syncing wallet"
+
+echo "If you see *error: Could not locate RPC credentials* message, do not worry"
 ~/proton/proton-cli stop
 sleep 10
+echo ""
+echo "=================================================================="
+echo "DO NOT CLOSE THIS WINDOW OR TRY TO FINISH THIS PROCESS "
+echo "PLEASE WAIT 5 MINUTES UNTIL YOU SEE THE RELOADING WALLET MESSAGE"
+echo "=================================================================="
+echo ""
 ~/proton/protond -daemon
-sleep 300
+sleep 250
 ~/proton/proton-cli stop
 sleep 20
 
@@ -68,7 +80,7 @@ rpcuser=protoncoin
 rpcpassword=${PASSWORD}
 EOF
 
-echo "RELOADING WALLET..."
+echo "Reloading wallet..."
 ~/proton/protond -daemon
 sleep 30
 
@@ -88,8 +100,8 @@ rpcallowip=127.0.0.1
 server=1
 daemon=1
 listen=1
-rpcport=17866
-port=17817
+rpcport=${RPCPORT}
+port=${PORT}
 maxconnections=256
 masternode=1
 masternodeprivkey=$GENKEY
@@ -102,19 +114,19 @@ sudo apt-get install ufw -y
 sudo apt-get update -y
 
 #fail2ban:
-sudo systemctl enable fail2ban
-sudo systemctl start fail2ban
+#sudo systemctl enable fail2ban
+#sudo systemctl start fail2ban
 
 #add a firewall
-sudo ufw default allow outgoing
-sudo ufw default deny incoming
-sudo ufw allow ssh/tcp
-sudo ufw limit ssh/tcp
-sudo ufw allow 17866/tcp
-sudo ufw allow 17817/tcp
-sudo ufw logging on
-sudo ufw status
-echo y | sudo ufw enable
+#sudo ufw default allow outgoing
+#sudo ufw default deny incoming
+#sudo ufw allow ssh/tcp
+#sudo ufw limit ssh/tcp
+#sudo ufw allow 17866/tcp
+#sudo ufw allow 17817/tcp
+#sudo ufw logging on
+#sudo ufw status
+#echo y | sudo ufw enable
 echo "Basic security completed..."
 
 echo "Restarting wallet with new configs, 30 seconds..."
@@ -137,9 +149,12 @@ virtualenv ./venv
 
 echo "proton_conf=/root/.protoncore/proton.conf" >> /root/.protoncore/proton_sentinel/sentinel.conf
 
+echo "Adding crontab jobs..."
 crontab -l > tempcron
 #echo new cron into cron file
 echo "* * * * * cd /root/.protoncore/proton_sentinel && ./venv/bin/python bin/sentinel.py >/dev/null 2>&1" >> tempcron
+echo "@reboot /bin/sleep 20 ; /root/proton/protond -daemon &" >> tempcron
+
 #install new cron file
 crontab tempcron
 rm tempcron
@@ -152,10 +167,10 @@ echo "proton-cli getmininginfo:"
 
 sleep 15
 
-echo "masternode status:"
+echo "Masternode status:"
 ~/proton/proton-cli masternode status
 
-echo "INSTALLED WITH VPS IP: $WANIP:17817"
+echo "INSTALLED WITH VPS IP: $WANIP:$PORT"
 sleep 1
 echo "INSTALLED WITH GENKEY: $GENKEY"
 sleep 1
