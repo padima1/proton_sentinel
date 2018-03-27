@@ -172,6 +172,6 @@ echo "Masternode status:"
 
 echo "INSTALLED WITH VPS IP: $WANIP:$PORT"
 sleep 1
-echo "INSTALLED WITH GENKEY: $GENKEY"
+echo "INSTALLED WITH MASTERNODE PRIVATE GENKEY: $GENKEY"
 sleep 1
 echo "rpcuser=protoncoin\nrpcpassword=$PASSWORD"
