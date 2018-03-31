@@ -170,8 +170,11 @@ sleep 15
 echo "Masternode status:"
 ~/proton/proton-cli masternode status
 
+echo "If you get \"Masternode not in masternode list\" status, don't worry, you just have to start your MN from your local wallet and the status will change"
+echo ""
 echo "INSTALLED WITH VPS IP: $WANIP:$PORT"
 sleep 1
 echo "INSTALLED WITH MASTERNODE PRIVATE GENKEY: $GENKEY"
 sleep 1
-echo "rpcuser=protoncoin\nrpcpassword=$PASSWORD"
+echo "rpcuser=protoncoin"
+echo "rpcpassword=$PASSWORD"
