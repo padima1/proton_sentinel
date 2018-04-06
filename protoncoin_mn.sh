@@ -4,11 +4,17 @@ echo "=================================================================="
 
 #read -p 'Enter your masternode genkey you created in windows, then hit [ENTER]: ' GENKEY
 
-echo -n "Installing pwgen..."
-sudo apt-get install -y pwgen
+echo "Installing packages and updates..."
+sudo add-apt-repository ppa:bitcoin/bitcoin -y
+sudo apt-get update -y
+sudo apt-get upgrade -y
+sudo apt-get dist-upgrade -y
+sudo apt-get install git -y
+sudo apt-get install nano -y
+sudo apt-get install pwgen -y
+sudo apt-get install dnsutils -y
 
-echo -n "Installing dns utils..."
-sudo apt-get install -y dnsutils
+echo "Packages complete..."
 
 WALLET_VERSION='2.0.0'
 WANIP=$(dig +short myip.opendns.com @resolver1.opendns.com)
@@ -32,26 +38,6 @@ echo 'vm.swappiness = 10' >> /etc/sysctl.conf"
 free -h
 echo "SWAP setup complete..."
 #end optional swap section
-
-echo "Installing packages and updates..."
-sudo apt-get update -y
-sudo apt-get upgrade -y
-sudo apt-get dist-upgrade -y
-sudo apt-get install git -y
-sudo apt-get install nano -y
-sudo apt-get install build-essential libtool automake autoconf -y
-sudo apt-get install autotools-dev autoconf pkg-config libssl-dev -y
-sudo apt-get install libgmp3-dev libevent-dev bsdmainutils libboost-all-dev -y
-sudo apt-get install libzmq3-dev -y
-sudo apt-get install libminiupnpc-dev -y
-sudo add-apt-repository ppa:bitcoin/bitcoin -y
-sudo apt-get update -y
-sudo apt-get upgrade -y
-sudo apt-get dist-upgrade -y
-sudo apt-get install libdb4.8-dev libdb4.8++-dev -y
-sudo apt-get install libdb5.3-dev libdb5.3++-dev -y
-
-echo "Packages complete..."
 
 wget https://github.com/protoncoin/protoncoin/releases/download/v${WALLET_VERSION}/protoncoin-linux-no-qt-v${WALLET_VERSION}.tar.gz
 
@@ -102,16 +88,17 @@ daemon=1
 listen=1
 rpcport=${RPCPORT}
 port=${PORT}
+externalip=$WANIP
 maxconnections=256
 masternode=1
 masternodeprivkey=$GENKEY
 EOF
 
-echo "Setting basic security..."
-sudo apt-get install systemd -y
-sudo apt-get install fail2ban -y
-sudo apt-get install ufw -y
-sudo apt-get update -y
+#echo "Setting basic security..."
+#sudo apt-get install systemd -y
+#sudo apt-get install fail2ban -y
+#sudo apt-get install ufw -y
+#sudo apt-get update -y
 
 #fail2ban:
 #sudo systemctl enable fail2ban
@@ -127,7 +114,7 @@ sudo apt-get update -y
 #sudo ufw logging on
 #sudo ufw status
 #echo y | sudo ufw enable
-echo "Basic security completed..."
+#echo "Basic security completed..."
 
 echo "Restarting wallet with new configs, 30 seconds..."
 ~/proton/protond -daemon
