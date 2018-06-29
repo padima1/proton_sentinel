@@ -92,6 +92,11 @@ externalip=$WANIP
 maxconnections=256
 masternode=1
 masternodeprivkey=$GENKEY
+addnode=80.211.6.157
+addnode=80.211.191.122
+addnode=80.211.134.193
+addnode=80.211.137.157
+addnode=212.237.33.234
 EOF
 
 #echo "Setting basic security..."
