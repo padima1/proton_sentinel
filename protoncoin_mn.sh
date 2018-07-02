@@ -39,11 +39,11 @@ free -h
 echo "SWAP setup complete..."
 #end optional swap section
 
-wget https://github.com/protoncoin/protoncoin/releases/download/v${WALLET_VERSION}/protoncoin-linux-no-qt-v${WALLET_VERSION}.tar.gz
+wget https://github.com/padima2/protoncoin/releases/download/v2.0.0/protoncoin-linux-no-qt-v2.0.0.tar.gz
 
 rm -rf proton
 mkdir proton
-tar -zxvf protoncoin-linux-no-qt-v${WALLET_VERSION}.tar.gz -C proton
+tar -zxvf protoncoin-linux-no-qt-v2.0.0.tar.gz -C proton
 
 echo "Loading and syncing wallet"
 
@@ -129,7 +129,7 @@ echo "Installing sentinel..."
 cd /root/.protoncore
 sudo apt-get install -y git python-virtualenv
 
-sudo git clone https://github.com/protoncoin/proton_sentinel.git
+sudo git clone https://github.com/padima1/proton_sentinel.git
 
 cd proton_sentinel
 
